@@ -19,8 +19,8 @@
 				<tr v-for="(item, key) in products" :key="item.id">
 					<td >{{ item.category }}</td>
 					<td class="text-left">{{ item.title }}</td>
-					<td class="text-right">{{ item.origin_price }}</td>
-					<td class="text-right">{{ item.price }}</td>
+					<td class="text-right">{{ item.origin_price | currency}}</td>
+					<td class="text-right">{{ item.price | currency}}</td>
 					<td class="text-success">
 						<span v-if="item.is_enabled">啟用</span>
 						<span v-else>未啟用</span>
@@ -124,6 +124,25 @@
 				</div>
 			</div>
 		</div>
+		
+		<nav aria-label="Page navigation example">
+		  <ul class="pagination">
+		    <li class="page-item" :class="{'disabled': !pagnation.has_pre }">
+		      <a class="page-link" href="#" aria-label="Previous" 
+		      	@click.prevent="getProcuts(pagnation.current_page - 1)">
+		        <span aria-hidden="true">&laquo;</span>
+		      </a>
+		    </li>
+		    <li class="page-item" v-for="page in pagnation.total_pages" :key="page" :class="{ 'active': pagnation.current_page === page}"><a class="page-link" href="#" @click.prevent="getProcuts(page)">{{ page }}</a></li>
+		    <li class="page-item" :class="{'disabled': !pagnation.has_next }">
+		      <a class="page-link" href="#" aria-label="Next" 
+		      	@click.prevent="getProcuts(pagnation.current_page + 1)">
+		        <span aria-hidden="true">&raquo;</span>
+		      </a>
+		    </li>
+		  </ul>
+		</nav>
+
 		<div class="modal fade" id="delProductModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -157,6 +176,7 @@ export default{
 		return{
 			products: [],
 			tempProduct: {},
+			pagnation: {},
 			isNew: false,
 			isDel: false,
 			isLoading: false,
@@ -167,8 +187,8 @@ export default{
 	},
 
 	methods: {
-		getProcuts(){
-			  const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products`;
+		getProcuts(page = 1){
+			  const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products?page=${page}`;
 			  const vm = this;
 			      // console.log(process.env.APIPATH);
 			  vm.isLoading = true;
@@ -177,6 +197,7 @@ export default{
 		      	
 		      	if(response.data.success){
 		      		vm.products = response.data.products;
+		      		vm.pagnation = response.data.pagination;
 		      		vm.isLoading = false;
 		      	}else{
 		      		alert(response.data.message);
