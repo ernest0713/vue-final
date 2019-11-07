@@ -21,10 +21,10 @@ export default {
   //   components: {
   //     HelloWorld
   //   }
-  }
+  };
   </script>
 
   <style lang="scss">
-  @import "./assets/all";
+    @import "./assets/all";
 
   </style>

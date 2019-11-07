@@ -20,7 +20,7 @@ axios.defaults.withCredentials = true;
 Vue.component('Loading', Loading);
 Vue.filter('currency', currencyFilter);
 
-/* eslint-disable no-new */
+/* eslint-disable no-new */  
 
 new Vue({
   el: '#app',

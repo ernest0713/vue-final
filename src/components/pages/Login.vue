@@ -43,7 +43,7 @@
 	}
 </script>
 
-<style scpoed>
+<style scoped>
 
 html,
 body {
